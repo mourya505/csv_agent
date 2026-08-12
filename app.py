@@ -1,12 +1,9 @@
 import pandas as pd
-from analyzer import *
-
+from tools import *
+from parse import parse_question
+from llm import llm
 df = pd.read_csv("data.csv")
+question = input("Ask your question: ")
 
-print(total_sales(df, "Q1_Sales"))
-
-print(average_sales(df, "Q2_Sales"))
-
-print(highest_sales_region(df, "Q3_Sales"))
-
-print(highest_sales_product(df, "Q4_Sales"))
+llm=llm.invoke("hello")
+print(llm.content)
