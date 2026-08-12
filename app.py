@@ -1,7 +1,63 @@
 import pandas as pd
+from tools import (
+    total_sales,
+    average_sales,
+    highest_sales_region,
+    highest_sales_product,
+    shape_of_table,
+    column_name,
+    unique_column,
+    sales_growth,
+    regional_sales_data
+)
 import tools
 from parse import parse_question
-from llm import llm
+from llm import llm_groq
+from agent import build_agent
+from rich import print
+
 df = pd.read_csv("data.csv")
 tools.df=df
-print(tools.total_sales.invoke({"quarter": "Q1_Sales"}))
+tool_list = [
+    total_sales,
+    average_sales,
+    highest_sales_region,
+    highest_sales_product,
+    shape_of_table,
+    column_name,
+    unique_column,
+    sales_growth,
+    regional_sales_data
+
+]
+
+llm=llm_groq
+prompt="""You are an AI Data Analyst.
+
+You answer questions about the sales dataset by using the available tools.
+
+Rules:
+1. Always use a tool when the question requires data from the dataset.
+2. Never invent numbers.
+3. Select the appropriate tool based on the user's question.
+4. Use the correct quarter.
+5. Explain the result clearly to the user."""
+agent = build_agent(
+    llm=llm,
+    tools=tool_list,
+    prompt=prompt
+)
+print("ask your question and type exit to quit")
+while(True):
+    question=input("you:")
+    if question.lower()=="exit":
+        break
+    response = agent.invoke({
+        "messages": [
+            {
+                "role": "user",
+                "content": question
+            }
+        ]
+    })
+    print(response["messages"][-1].content)
