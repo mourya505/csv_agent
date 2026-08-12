@@ -1,9 +1,7 @@
 import pandas as pd
-from tools import *
+import tools
 from parse import parse_question
 from llm import llm
 df = pd.read_csv("data.csv")
-question = input("Ask your question: ")
-
-llm=llm.invoke("hello")
-print(llm.content)
+tools.df=df
+print(tools.total_sales.invoke({"quarter": "Q1_Sales"}))
