@@ -8,7 +8,8 @@ from tools import (
     column_name,
     unique_column,
     sales_growth,
-    regional_sales_data
+    regional_sales_data,
+    abs_change
 )
 import tools
 from parse import parse_question
@@ -27,7 +28,8 @@ tool_list = [
     column_name,
     unique_column,
     sales_growth,
-    regional_sales_data
+    regional_sales_data,
+    abs_change
 
 ]
 
@@ -41,7 +43,10 @@ Rules:
 2. Never invent numbers.
 3. Select the appropriate tool based on the user's question.
 4. Use the correct quarter.
-5. Explain the result clearly to the user."""
+5. Explain the result clearly to the user.
+6. If the query can be answered in one word then dont try to explain
+7. Never try to explain whole calculation without user asking for it
+ """
 agent = build_agent(
     llm=llm,
     tools=tool_list,
