@@ -89,3 +89,7 @@ def regional_sales_data(start:str,end:str):
      result2=df.groupby("Region")[end].sum()
      com=pd.concat([result1,result2],axis=1)
      return com
+@tool
+def abs_change(start:str,end:str):
+    """use this to find absolute change"""
+    return df[end]-df[start]
